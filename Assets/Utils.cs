@@ -24,15 +24,15 @@ public class Utils : MonoBehaviour
         {
             if (spriteRenderer.name == "Armor")
             {
-                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Armor_" + Random.Range(1, 4));
+                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/armor" + Random.Range(1, 4));
             }
-            else if (spriteRenderer.name == "Weapon")
+            else if (spriteRenderer.name == "Body")
             {
-                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Weapon_" + Random.Range(1, 4));
+                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/body" + Random.Range(1, 4));
             }
             else if (spriteRenderer.name == "Helmet")
             {
-                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Helmet_" + Random.Range(1, 4));
+                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/helmet" + Random.Range(1, 4));
             }
         }
     }
