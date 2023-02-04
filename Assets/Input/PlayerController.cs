@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     private PlayerInputs playerInputs;
     private Animator animator;
     private SpriteRenderer[] spriteRenderers;
-    private float coneAngle = 180.0f;
-    private float coneDistance = 100.0f;
+    private float coneAngle = 45.0f;
+    private float coneDistance = 5.0f;
     private Vector2 currentAim;
     private Vector2 currentMove;
 
@@ -115,21 +115,31 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(DodgeCooldown());
     }
 
-    List<Collider> GetObjectsInFront(Vector3 coneDirection)
+   List<Collider> GetObjectsInFront(Rigidbody body)
+{
+    Collider[] objectsInSphere = Physics.OverlapSphere(transform.position, coneDistance);
+    List<Collider> objectsInCone = new List<Collider>();
+
+    float startAngle = body.rotation.eulerAngles.y - coneAngle / 2;
+    float endAngle = body.rotation.eulerAngles.y + coneAngle / 2;
+
+    for (float angle = startAngle; angle < endAngle; angle += 1)
+    {
+        Vector3 direction = Quaternion.Euler(0, angle+90, 0) * Vector3.forward;
+        Debug.DrawRay(transform.position, direction * coneDistance, Color.red,0.5f);
+    }
+
+    foreach (Collider col in objectsInSphere)
     {
 
-        Collider[] objectsInSphere = Physics.OverlapSphere(transform.position, coneDistance);
-        List<Collider> objectsInCone = new List<Collider>();
-        foreach (Collider col in objectsInSphere)
+                if (Vector3.Angle(Quaternion.Euler(0,90,0)*body.transform.forward, col.transform.position - body.transform.position) <= coneAngle / 2)
         {
-            Vector3 directionToObject = (col.transform.position - transform.position).normalized;
-            if (Vector3.Angle(coneDirection, directionToObject) <= coneAngle / 2)
-            {
-                objectsInCone.Add(col);
-            }
+            objectsInCone.Add(col);
         }
-        return objectsInCone;
+   
     }
+    return objectsInCone;
+}
 
 
 //Smoother version of aim, gotta fix the drifting
@@ -174,7 +184,7 @@ void Aim()
         if (playerInputs.Player.Attack.triggered && !isBlocking)
         {
         Debug.Log("Attack");
-        List<Collider> enemies = GetObjectsInFront(_rigidbody.transform.forward);
+        List<Collider> enemies = GetObjectsInFront(_rigidbody);
         foreach (Collider enemy in enemies)
         {
             if (enemy.gameObject.tag == "Enemy"){
