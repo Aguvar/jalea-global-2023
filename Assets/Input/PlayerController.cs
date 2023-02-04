@@ -1,9 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;   
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float speed = 10;
     [SerializeField]
@@ -12,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private int attack = 1;
     private Rigidbody _rigidbody;
     private PlayerInputs playerInputs;
+    private Animator animator;
+    private SpriteRenderer[] spriteRenderers;
 
     private Vector2 currentAim;
     private Vector2 currentMove;
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody>();
         playerInputs = new PlayerInputs();
+        animator = GetComponentInChildren<Animator>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
     }
 
     private void OnEnable() {
@@ -26,15 +29,13 @@ public class PlayerController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Start() {
+
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    void Update() {
+
     }
 
     void FixedUpdate() {
@@ -43,8 +44,12 @@ public class PlayerController : MonoBehaviour
     }
 
     void Aim() {
+
         currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
-        _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
+        if (currentAim != Vector2.zero) {
+            _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
+
+        }
 
 
 
@@ -53,8 +58,15 @@ public class PlayerController : MonoBehaviour
     void Move() {
         currentMove = playerInputs.Player.Move.ReadValue<Vector2>() * speed;
 
-        _rigidbody.velocity = new Vector3( currentMove.x, 0, currentMove.y  );
-        //_rigidbody.position = _rigidbody.position + new Vector3();
+        _rigidbody.velocity = new Vector3(currentMove.x, 0, currentMove.y);
+
+
+        animator.SetBool("isMoving", _rigidbody.velocity != Vector3.zero);
+
+        foreach (SpriteRenderer spriteRenderer in spriteRenderers) {
+            spriteRenderer.flipX = _rigidbody.velocity.x > 0;
+        }
+
     }
 
     void Attack() {
@@ -68,5 +80,5 @@ public class PlayerController : MonoBehaviour
     void Parry() {
 
     }
-        
+
 }
