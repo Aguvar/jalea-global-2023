@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
+            Debug.Log("Dead");
             //Destroy(gameObject);
         }
     }
@@ -165,9 +166,8 @@ public class PlayerController : MonoBehaviour
         canDodge = true;
         Debug.Log("Dodge Ready");
     }
-
-
 }
+
 
 
 
