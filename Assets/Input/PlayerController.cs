@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
 
     private bool canDodge = true;
 
-    private float health = 100f;
+    private float Health = 100f;
 
     public void TakeDamage(float damage)
     {
@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
+            Debug.Log("Dead");
             //Destroy(gameObject);
         }
     }
@@ -147,9 +148,6 @@ public class PlayerController : MonoBehaviour
         canDodge = true;
         Debug.Log("Dodge Ready");
     }
-
-
-}
 
 
 }
