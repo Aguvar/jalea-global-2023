@@ -96,6 +96,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Aim();
+        Move();
         // If player pressed the space key (not in player inputs) attack()
         if(!isDead){
         Attack();
@@ -106,8 +108,6 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Aim();
-        Move();
         if (playerInputs.Player.Dodge.inProgress && canDodge)
             //Dodge();
             StartCoroutine(DodgeCooldown());
@@ -133,10 +133,10 @@ public class PlayerController : MonoBehaviour
     {
 
         currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
-        if (currentAim != Vector2.zero)
-        {
-            _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
-        }
+        //if (currentAim != Vector2.zero)
+        //{
+        //    _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
+        //}
 
 
 
@@ -220,15 +220,15 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void Dodge()
-    {
-        _rigidbody.AddForce(new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed), ForceMode.Impulse);
-        //_rigidbody.velocity = new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed);
-        dodgeTimer = dodgeInternalCD;
-        canDodge = false;
-        StartCoroutine(DodgeCooldown());
-        Debug.Log("doge");
-    }
+    //void Dodge()
+    //{
+    //    _rigidbody.AddForce(new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed), ForceMode.Impulse);
+    //    //_rigidbody.velocity = new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed);
+    //    dodgeTimer = dodgeInternalCD;
+    //    canDodge = false;
+    //    StartCoroutine(DodgeCooldown());
+    //    Debug.Log("doge");
+    //}
 
 
 
