@@ -17,26 +17,55 @@ public class PlayerController : MonoBehaviour
     private PlayerInputs playerInputs;
     private Animator animator;
     private SpriteRenderer[] spriteRenderers;
-
+    private float coneAngle = 180.0f;
+    private float coneDistance = 100.0f;
     private Vector2 currentAim;
     private Vector2 currentMove;
 
     private bool canDodge = true;
 
+    public float parryWindow = 0.2f;
     public float Health = 100f;
     public float AttackDamage = 10f;
+    private bool isParryable = false;
+    private bool didParry = false;
+    private bool isBlocking = false;
+    private bool isDead = false;
+    public void ReceiveAttack(float damage)
+    {
+        if(!isBlocking){
+          isParryable = true;
+                  GetComponent<Renderer>().material.color = Color.green;
+        StartCoroutine(ResetParry(damage));
+        }
+
+
+    }
+    IEnumerator ResetParry(float damage)
+    {
+        yield return new WaitForSeconds(parryWindow);
+        GetComponent<Renderer>().material.color = Color.white;
+        if (didParry)
+        {
+            Debug.Log("Parried");
+        }
+        else
+        {
+            Debug.Log("Took Damage");
+            TakeDamage(damage);
+        }
+        isParryable = false;
+        didParry = false;
+    }
     public void TakeDamage(float damage)
     {
-        // -Implement Blocking first-
-        // if (isBlocking)
-        // {
-        //     damage = damage / 2;
-        // }
         Health -= damage;
         if (Health <= 0)
         {
+            speed = 0;
+            GetComponent<Renderer>().material.color = Color.yellow;
+            isDead = true;
             Debug.Log("Dead");
-            //Destroy(gameObject);
         }
     }
 
@@ -68,10 +97,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // If player pressed the space key (not in player inputs) attack()
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Attack();
-        }
+        if(!isDead){
+        Attack();
+        Block();
+          }
      
     }
 
@@ -86,8 +115,7 @@ public class PlayerController : MonoBehaviour
 
     List<Collider> GetObjectsInFront(Vector3 coneDirection)
     {
-        float coneAngle = 180.0f;
-        float coneDistance = 100.0f;
+
         Collider[] objectsInSphere = Physics.OverlapSphere(transform.position, coneDistance);
         List<Collider> objectsInCone = new List<Collider>();
         foreach (Collider col in objectsInSphere)
@@ -153,6 +181,8 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
+        if (playerInputs.Player.Attack.triggered && !isBlocking)
+        {
         Debug.Log("Attack");
         List<Collider> enemies = GetObjectsInFront(_rigidbody.transform.forward);
         foreach (Collider enemy in enemies)
@@ -160,17 +190,33 @@ public class PlayerController : MonoBehaviour
             if (enemy.gameObject.tag == "Enemy"){
             DealDamage(enemy.gameObject);
             }
-        }
+        }        }
+
     }
 
-    void Block()
+  void Block()
     {
-
+        
+        playerInputs.Player.Block.performed += ctx => {
+            Debug.Log("Blocking");
+            isBlocking = true;
+            // Turn blue
+            GameObject.Find("Player").GetComponent<Renderer>().material.color = Color.blue;
+            if (isParryable)
+            {
+                Parry();
+            }
+        };
+        playerInputs.Player.Block.canceled += ctx => {
+            Debug.Log("Not Blocking");
+            isBlocking = false;
+            GameObject.Find("Player").GetComponent<Renderer>().material.color = Color.white;
+        };
     }
 
     void Parry()
     {
-
+        didParry = true;
 
     }
 

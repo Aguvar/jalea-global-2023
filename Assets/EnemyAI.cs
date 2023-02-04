@@ -21,9 +21,10 @@ public class EnemyAI : MonoBehaviour
     public string Name = "Boss";
     public void TakeDamage(float damage)
     {
-        if (isBlocking)
-        {
-            damage = damage / 2;
+        TryBlock();
+        if(isBlocking){
+            Debug.Log("Blocked half damage");
+        damage = damage / 2;
         }
         Health -= damage;
         if (Health <= 0)
@@ -33,7 +34,7 @@ public class EnemyAI : MonoBehaviour
     }
     void DealDamage()
     {
-        Player.GetComponent<PlayerController>().TakeDamage(AttackDamage);
+        Player.GetComponent<PlayerController>().ReceiveAttack(AttackDamage);
     }
     void TryBlock()
     {
@@ -111,9 +112,6 @@ IEnumerator Retreat()
             transform.position += transform.forward * MoveSpeed * Time.deltaTime;
         }
      // If player tries to attack, try to block
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TryBlock();
-        }
+
     }
 }
