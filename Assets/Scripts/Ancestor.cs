@@ -5,8 +5,9 @@ using UnityEngine;
 public class Ancestor
 {
     public string Name;
-    public string BodyNum;
-    public string ArmonNum;
-    public string HelmetNum;
+    public int BodyNum;
+    public int ArmorNum;
+    public int HelmetNum;
     public int DifficultyModifier;
+    public int Iteration;
 }

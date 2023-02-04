@@ -22,4 +22,17 @@ public class MainManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
+    // public void NextLevel()
+    // {
+    //     foreach (GameObject enemy in Enemies)
+    //     {
+    //         Destroy(enemy);
+    //     }
+    //     Enemies.Clear();
+    //     for (int i = 0; i < 10; i++)
+    //     {
+    //         GameManager.GenerateEnemy(i);
+    //     }
+    // }
 }

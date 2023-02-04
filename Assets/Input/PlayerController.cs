@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     private bool isBlocking = false;
     private bool isDead = false;
     public float AimSmoothing = 15f;
-
+    private GameManager gameManager;
     public void ReceiveAttack(float damage)
     {
         if(!isBlocking){
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        gameManager = GameManager.Instance;
     }
 
     // Update is called once per frame
@@ -201,7 +201,7 @@ void Aim()
             Debug.Log("Blocking");
             isBlocking = true;
             // Turn blue
-            GameObject.Find("Player").GetComponent<Renderer>().material.color = Color.blue;
+            gameManager.Player.GetComponent<Renderer>().material.color = Color.blue;
             if (isParryable)
             {
                 Parry();
@@ -210,7 +210,7 @@ void Aim()
         playerInputs.Player.Block.canceled += ctx => {
             Debug.Log("Not Blocking");
             isBlocking = false;
-            GameObject.Find("Player").GetComponent<Renderer>().material.color = Color.white;
+            gameManager.Player.GetComponent<Renderer>().material.color = Color.white;
         };
     }
 

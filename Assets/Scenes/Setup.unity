@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414738, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -370,6 +370,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   introText: {fileID: 713142301}
   introPanel: {fileID: 115597735}
+  EnemyPrefab: {fileID: 9044670357273014786, guid: f335dfa76721c55419b02177da75573b, type: 3}
+  Player: {fileID: 0}
+  PlayerPrefab: {fileID: 7481193816806073753, guid: 0ebd50b0605e15549a60eff21c581690, type: 3}
+  CurrentStage: 0
+  Enemies: []
 --- !u!4 &2061794874
 Transform:
   m_ObjectHideFlags: 0

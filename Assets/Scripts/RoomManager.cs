@@ -6,13 +6,18 @@ public class RoomManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject roomPrefab;
-
     private GameManager gameManager;
-
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = FindAnyObjectByType<GameManager>();
+        gameManager = GameManager.Instance;
+
+        gameManager.CreatePlayer();
+        StartCoroutine(gameManager.ShowIntro());
+
+        Debug.Log("Player created");
+        Debug.Log(gameManager.PlayerAncestor.Name);
+                gameManager.LoadEnemies();
 
         int offset = 300;
 
