@@ -50,7 +50,6 @@ public class PlayerController : MonoBehaviour
     void Move() {
         currentMove = playerInputs.Player.Move.ReadValue<Vector2>() * speed;
 
-        print(currentMove);
         _rigidbody.velocity = new Vector3( currentMove.x, 0, currentMove.y  );
         //_rigidbody.position = _rigidbody.position + new Vector3();
     }
