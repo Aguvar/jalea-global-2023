@@ -5,7 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private float speed;
+    private float speed = 10;
+    [SerializeField]
+    private float dodgeSpeed = 20;
+    [SerializeField]
+    private int attack = 1;
     private Rigidbody _rigidbody;
     private PlayerInputs playerInputs;
 
@@ -40,13 +44,27 @@ public class PlayerController : MonoBehaviour
 
     void Aim() {
         currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
-        print(currentAim);
+
     }
 
     void Move() {
-        currentMove = playerInputs.Player.Move.ReadValue<Vector2>();
+        currentMove = playerInputs.Player.Move.ReadValue<Vector2>() * speed;
 
-        _rigidbody.velocity = currentMove * speed;
+        print(currentMove);
+        _rigidbody.velocity = new Vector3( currentMove.x, 0, currentMove.y  );
+        //_rigidbody.position = _rigidbody.position + new Vector3();
+    }
+
+    void Attack() {
+
+    }
+
+    void Block() {
+
+    }
+
+    void Parry() {
+
     }
         
 }
