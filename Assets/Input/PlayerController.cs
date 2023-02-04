@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     void Aim() {
         currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
-        _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg, 0));
+        _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
 
 
 
