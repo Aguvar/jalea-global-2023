@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     private bool didParry = false;
     private bool isBlocking = false;
     private bool isDead = false;
+    public float AimSmoothing = 15f;
+
     public void ReceiveAttack(float damage)
     {
         if(!isBlocking){
@@ -129,38 +131,26 @@ public class PlayerController : MonoBehaviour
         return objectsInCone;
     }
 
-  void Aim()
+
+//Smoother version of aim, gotta fix the drifting
+void Aim()
+{
+    currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
+    if (currentAim != Vector2.zero)
     {
-
-        currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
-        //if (currentAim != Vector2.zero)
-        //{
-        //    _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
-        //}
-
-
-
+        float targetAngle = Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90;
+        float smoothedAngle = Mathf.LerpAngle(_rigidbody.rotation.eulerAngles.y, targetAngle, AimSmoothing * Time.deltaTime);
+     
+        if (Mathf.Abs(smoothedAngle - targetAngle) < 0.1f)
+        {
+            _rigidbody.rotation = Quaternion.Euler(new Vector3(0, targetAngle, 0));
+        }
+        else
+        {
+            _rigidbody.rotation = Quaternion.Euler(new Vector3(0, smoothedAngle, 0));
+        }
     }
-// public float AimSmoothing = 15f;
-// Smoother version of aim, gotta fix the drifting
-// void SmoothAim()
-// {
-//     currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
-//     if (currentAim != Vector2.zero)
-//     {
-//         float targetAngle = Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90;
-//         float smoothedAngle = Mathf.LerpAngle(_rigidbody.rotation.eulerAngles.y, targetAngle, AimSmoothing * Time.deltaTime);
-        
-//         if (Mathf.Abs(smoothedAngle - targetAngle) < 0.1f)
-//         {
-//             _rigidbody.rotation = Quaternion.Euler(new Vector3(0, targetAngle, 0));
-//         }
-//         else
-//         {
-//             _rigidbody.rotation = Quaternion.Euler(new Vector3(0, smoothedAngle, 0));
-//         }
-//     }
-// }
+}
 
     void Move()
     {
