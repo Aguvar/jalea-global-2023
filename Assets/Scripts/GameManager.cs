@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void GameOver() {
-
+        var ancestor = new Ancestor() {  };
 
     }
 

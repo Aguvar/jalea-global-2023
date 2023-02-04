@@ -9,4 +9,5 @@ public class Ancestor
     public string ArmonNum;
     public string HelmetNum;
     public int DifficultyModifier;
+    public int Generation;
 }
