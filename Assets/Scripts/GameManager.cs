@@ -4,8 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     public List<Ancestor> familyTree;
 
     private string playerName;
@@ -15,15 +14,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject introPanel;
 
-    
+
 
     private void Awake() {
         DontDestroyOnLoad(this.gameObject);
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         familyTree = new List<Ancestor>();
         playerName = Utils.GenerateJapaneseName();
 
@@ -36,19 +34,32 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    void Update() {
+
     }
 
     IEnumerator ShowIntro() {
         string intro = $"Your name is {playerName}, and your family has been cursed for generations...\n\nIt's up to you to break the curse.";
-        
+
         introText.text = intro;
 
-        introPanel.SetActive(true);
+        CanvasGroup canvasGroup = introPanel.GetComponent<CanvasGroup>();
 
-        yield return new WaitForSeconds(5);
+        introPanel.SetActive(true);
+        canvasGroup.alpha = 0;
+
+        while (canvasGroup.alpha < 1) {
+            canvasGroup.alpha += 0.01f;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(4);
+
+        while (canvasGroup.alpha > 0) {
+            canvasGroup.alpha -= 0.01f;
+            yield return null;
+
+        }
 
         introPanel.SetActive(false);
 
@@ -60,5 +71,5 @@ public class GameManager : MonoBehaviour
 
     }
 
-    
+
 }
