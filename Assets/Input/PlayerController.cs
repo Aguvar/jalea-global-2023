@@ -23,8 +23,7 @@ public class PlayerController : MonoBehaviour
 
     private bool canDodge = true;
 
-    private float health = 100f;
-
+    public float Health = 100f;
     public void TakeDamage(float damage)
     {
         // -Implement Blocking first-
@@ -77,8 +76,7 @@ public class PlayerController : MonoBehaviour
             //Dodge();
             StartCoroutine(DodgeCooldown());
     }
-
-    void Aim()
+  void Aim()
     {
 
         currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
@@ -91,6 +89,26 @@ public class PlayerController : MonoBehaviour
 
 
     }
+// public float AimSmoothing = 15f;
+// Smoother version of aim, gotta fix the drifting
+// void SmoothAim()
+// {
+//     currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
+//     if (currentAim != Vector2.zero)
+//     {
+//         float targetAngle = Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90;
+//         float smoothedAngle = Mathf.LerpAngle(_rigidbody.rotation.eulerAngles.y, targetAngle, AimSmoothing * Time.deltaTime);
+        
+//         if (Mathf.Abs(smoothedAngle - targetAngle) < 0.1f)
+//         {
+//             _rigidbody.rotation = Quaternion.Euler(new Vector3(0, targetAngle, 0));
+//         }
+//         else
+//         {
+//             _rigidbody.rotation = Quaternion.Euler(new Vector3(0, smoothedAngle, 0));
+//         }
+//     }
+// }
 
     void Move()
     {
@@ -152,4 +170,4 @@ public class PlayerController : MonoBehaviour
 }
 
 
-}
+

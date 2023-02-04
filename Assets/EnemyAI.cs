@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class EnemyAI : MonoBehaviour
 {
     public Transform Player;
-    public float BaseMoveSpeed = 60;
+    public float BaseMoveSpeed = 30;
     private float MoveSpeed = 0;
     public float AttackCooldown = 0.5f;
-    public float AttackRange = 70f;
+    public float AttackRange = 3f;
     public float AttackDamage = 10f;
     public float Health = 100f;
     public float ChanceToBlock = 0.5f;
@@ -17,9 +17,8 @@ public class EnemyAI : MonoBehaviour
     private bool isRetreating = false;
     public float retreatTime = 0.4f;
     public float BlockCooldown = 0.5f;
-
     public float DodgeWindow = 0.2f;
-
+    public string Name = "Boss";
     public void TakeDamage(float damage)
     {
         if (isBlocking)
@@ -95,6 +94,8 @@ IEnumerator Retreat()
     void Start()
     {
         MoveSpeed = BaseMoveSpeed;
+
+        GetComponentInChildren<TextMeshPro>().text = Name;
     }
 
     // Update is called once per frame
