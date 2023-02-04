@@ -50,8 +50,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         familyTree = new List<Ancestor>();
         SceneManager.LoadScene("Main");
 
@@ -96,9 +95,8 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    void Update() {
+
     }
 
     public IEnumerator ShowIntro() {
@@ -106,9 +104,23 @@ public class GameManager : MonoBehaviour
         
         introText.text = intro;
 
-        introPanel.SetActive(true);
+        CanvasGroup canvasGroup = introPanel.GetComponent<CanvasGroup>();
 
-        yield return new WaitForSeconds(5);
+        introPanel.SetActive(true);
+        canvasGroup.alpha = 0;
+
+        while (canvasGroup.alpha < 1) {
+            canvasGroup.alpha += 0.01f;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(4);
+
+        while (canvasGroup.alpha > 0) {
+            canvasGroup.alpha -= 0.01f;
+            yield return null;
+
+        }
 
         introPanel.SetActive(false);
 
@@ -116,9 +128,9 @@ public class GameManager : MonoBehaviour
     }
 
     void GameOver() {
-
+        var ancestor = new Ancestor() {  };
 
     }
 
-    
+
 }
