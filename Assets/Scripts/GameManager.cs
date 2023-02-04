@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public List<(string, string, string)> familyTree;
+    public List<Ancestor> familyTree;
 
     private string playerName;
 
@@ -23,10 +24,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        familyTree = new List<(string, string, string)>();
+        familyTree = new List<Ancestor>();
         playerName = Utils.GenerateJapaneseName();
 
+
         //Generate level
+
+        SceneManager.LoadScene("Main");
 
         StartCoroutine(ShowIntro());
     }
@@ -49,6 +53,11 @@ public class GameManager : MonoBehaviour
         introPanel.SetActive(false);
 
         yield return null;
+    }
+
+    void GameOver() {
+
+
     }
 
     
