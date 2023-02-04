@@ -17,6 +17,25 @@ public class EnemyAI : MonoBehaviour
     private bool isRetreating = false;
     public float retreatTime = 0.4f;
     public float BlockCooldown = 0.5f;
+
+    public float DodgeWindow = 0.2f;
+
+    public void TakeDamage(float damage)
+    {
+        if (isBlocking)
+        {
+            damage = damage / 2;
+        }
+        Health -= damage;
+        if (Health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+    void DealDamage()
+    {
+        Player.GetComponent<PlayerController>().TakeDamage(AttackDamage);
+    }
     void TryBlock()
     {
         if (Random.value <= ChanceToBlock)
@@ -51,6 +70,7 @@ void Attack()
         isAttacking = true;
         MoveSpeed = 0;
         GetComponent<Renderer>().material.color = Color.red;
+        Invoke("DealDamage", DodgeWindow);
         StartCoroutine(ResetAttack());
         StartCoroutine(Retreat());
     }

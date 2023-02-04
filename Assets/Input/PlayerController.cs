@@ -17,6 +17,26 @@ public class PlayerController : MonoBehaviour {
     private Vector2 currentAim;
     private Vector2 currentMove;
 
+    private float health = 100f;
+
+    public void TakeDamage(float damage)
+    {
+        // -Implement Blocking first-
+        // if (isBlocking)
+        // {
+        //     damage = damage / 2;
+        // }
+        Health -= damage;
+        if (Health <= 0)
+        {
+            //Destroy(gameObject);
+        }
+    }
+
+    public void DealDamage()
+    {
+        // Need to implement enemy detection and range first
+    }
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody>();
         playerInputs = new PlayerInputs();
