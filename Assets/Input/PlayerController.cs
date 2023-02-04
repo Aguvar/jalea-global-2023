@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private bool canDodge = true;
 
     public float Health = 100f;
+    public float AttackDamage = 10f;
     public void TakeDamage(float damage)
     {
         // -Implement Blocking first-
@@ -39,9 +40,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void DealDamage()
+    public void DealDamage(GameObject enemy)
     {
-        // Need to implement enemy detection and range first
+        if (enemy != null) enemy.GetComponent<EnemyAI>().TakeDamage(AttackDamage);
     }
 
     private void Awake()
@@ -66,7 +67,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // If player pressed the space key (not in player inputs) attack()
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Attack();
+        }
+     
     }
 
     void FixedUpdate()
@@ -77,6 +83,24 @@ public class PlayerController : MonoBehaviour
             //Dodge();
             StartCoroutine(DodgeCooldown());
     }
+
+    List<Collider> GetObjectsInFront(Vector3 coneDirection)
+    {
+        float coneAngle = 180.0f;
+        float coneDistance = 100.0f;
+        Collider[] objectsInSphere = Physics.OverlapSphere(transform.position, coneDistance);
+        List<Collider> objectsInCone = new List<Collider>();
+        foreach (Collider col in objectsInSphere)
+        {
+            Vector3 directionToObject = (col.transform.position - transform.position).normalized;
+            if (Vector3.Angle(coneDirection, directionToObject) <= coneAngle / 2)
+            {
+                objectsInCone.Add(col);
+            }
+        }
+        return objectsInCone;
+    }
+
   void Aim()
     {
 
@@ -84,7 +108,6 @@ public class PlayerController : MonoBehaviour
         if (currentAim != Vector2.zero)
         {
             _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
-
         }
 
 
@@ -130,7 +153,14 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
-
+        Debug.Log("Attack");
+        List<Collider> enemies = GetObjectsInFront(_rigidbody.transform.forward);
+        foreach (Collider enemy in enemies)
+        {
+            if (enemy.gameObject.tag == "Enemy"){
+            DealDamage(enemy.gameObject);
+            }
+        }
     }
 
     void Block()
