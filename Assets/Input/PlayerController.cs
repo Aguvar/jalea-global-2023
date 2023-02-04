@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour
     private bool isDead = false;
     public float AimSmoothing = 15f;
     private GameManager gameManager;
+
+    [SerializeField]
+    private ParticleSystem parti;
+
     public void ReceiveAttack(float damage)
     {
         if(!isBlocking){
@@ -183,6 +187,7 @@ void Aim()
     {
         if (playerInputs.Player.Attack.triggered && !isBlocking)
         {
+        parti.Play();
         Debug.Log("Attack");
         List<Collider> enemies = GetObjectsInFront(_rigidbody);
         foreach (Collider enemy in enemies)
