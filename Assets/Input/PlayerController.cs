@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic;   
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -44,6 +44,9 @@ public class PlayerController : MonoBehaviour
 
     void Aim() {
         currentAim = playerInputs.Player.Aim.ReadValue<Vector2>();
+        _rigidbody.rotation = Quaternion.Euler(new Vector3(0, Mathf.Atan2(currentAim.x, currentAim.y) * Mathf.Rad2Deg - 90, 0));
+
+
 
     }
 
