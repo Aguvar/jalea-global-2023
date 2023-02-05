@@ -322,7 +322,7 @@ MonoBehaviour:
   dodgeInternalCD: 1.25
   parryWindow: 0.2
   Health: 100
-  AttackDamage: 600
+  AttackDamage: 100
   AttackBaseCD: 0
   AttackInternalCD: 0
   AimSmoothing: 15

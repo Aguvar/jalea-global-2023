@@ -621,8 +621,8 @@ MonoBehaviour:
   BaseMoveSpeed: 40
   AttackCooldown: 0.5
   AttackRange: 3
-  AttackDamage: 10
-  Health: 100
+  AttackDamage: 50
+  Health: 1000
   ChanceToBlock: 0.5
   retreatTime: 0.4
   BlockCooldown: 0.5

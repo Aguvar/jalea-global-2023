@@ -503,7 +503,7 @@ MonoBehaviour:
   AttackCooldown: 0.5
   AttackRange: 3
   AttackDamage: 10
-  Health: 10000
+  Health: 150
   ChanceToBlock: 0.5
   retreatTime: 0.4
   BlockCooldown: 0.5
@@ -511,6 +511,9 @@ MonoBehaviour:
   Name: Boss
   damageText: {fileID: 232126888972014935, guid: d72cefac7b8d6ee41a8e0359a3c9a140, type: 3}
   isAggro: 1
+  EnemyDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1199384569966374773
 PrefabInstance:
   m_ObjectHideFlags: 0
