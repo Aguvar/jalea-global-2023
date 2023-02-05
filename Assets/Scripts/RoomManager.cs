@@ -12,13 +12,14 @@ public class RoomManager : MonoBehaviour
     {
         gameManager = GameManager.Instance;
 
-        gameManager.CreatePlayer();
-        StartCoroutine(gameManager.ShowIntro());
+        gameManager.CreatePlayer();        
+        //StartCoroutine(gameManager.ShowIntro());
 
         Debug.Log("Player created");
         Debug.Log(gameManager.PlayerAncestor.Name);
-                gameManager.LoadEnemies();
-
+        gameManager.LoadEnemy(gameManager.CurrentStage);
+        // Spawn tombstone at lastTombsonePosition
+        if(gameManager.lastTombstonePosition != new Vector3(0,0,0)) Instantiate(gameManager.TombstonePrefab, gameManager.lastTombstonePosition, Quaternion.identity);
         int offset = 300;
 
         foreach (var ancestor in gameManager.familyTree) {

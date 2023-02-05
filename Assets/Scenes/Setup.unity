@@ -1163,10 +1163,11 @@ MonoBehaviour:
   introText: {fileID: 713142301}
   introPanel: {fileID: 115597735}
   EnemyPrefab: {fileID: 9044670357273014786, guid: f335dfa76721c55419b02177da75573b, type: 3}
+  TombstonePrefab: {fileID: 3711584884544473710, guid: 4a5447f60b44806479ededede14b4f5a, type: 3}
   Player: {fileID: 0}
   PlayerPrefab: {fileID: 7481193816806073753, guid: 0ebd50b0605e15549a60eff21c581690, type: 3}
+  lastTombstonePosition: {x: 0, y: 0, z: 0}
   CurrentStage: 0
-  Enemies: []
 --- !u!4 &2061794874
 Transform:
   m_ObjectHideFlags: 0

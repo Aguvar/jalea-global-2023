@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 30;
+    private float speed = 50;
     [SerializeField]
     private float dodgeSpeed;
     [SerializeField]
@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<Renderer>().material.color = Color.yellow;
             isDead = true;
             Debug.Log("Dead");
+            gameManager.OnDeath();
         }
     }
 
@@ -97,6 +98,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.Instance;
+        parti = GetComponentInChildren<ParticleSystem>(); 
     }
 
     // Update is called once per frame
