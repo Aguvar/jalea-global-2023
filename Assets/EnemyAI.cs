@@ -47,7 +47,7 @@ public class EnemyAI : MonoBehaviour {
         }
     }
     void DealDamage() {
-        Player.GetComponent<PlayerController>().TakeDamage(AttackDamage);
+        Player.GetComponent<PlayerController>().TakeDamage(AttackDamage * Random.Range(0.8f, 1.1f));
     }
     void TryBlock() {
         if (Random.value <= ChanceToBlock) {
