@@ -28,7 +28,7 @@ public class NextLevel : MonoBehaviour
                 Destroy(enemy);
             }
             GameManager.Instance.CurrentStage++;
-            GameManager.Instance.LoadEnemy(GameManager.Instance.CurrentStage);
+            //GameManager.Instance.LoadEnemy(GameManager.Instance.CurrentStage);
             GameManager.Instance.Player.transform.position = new Vector3(0, 15, 0);
 
             

@@ -34,14 +34,14 @@ public class GameManager : MonoBehaviour
     public List<Ancestor> Enemies = new List<Ancestor>();
     // Queue of stages to load
 
-    public void CreatePlayer() {
-        Player = Instantiate(PlayerPrefab, new Vector3(0, 15, 0), Quaternion.identity);
+    public void CreatePlayerData() {
+        //Player = Instantiate(PlayerPrefab, new Vector3(0, 15, 0), Quaternion.identity);
         PlayerAncestor = new Ancestor();
         PlayerAncestor.Name = Utils.GenerateJapaneseName();
-        PlayerAncestor.Iteration = 0;
+        PlayerAncestor.Iteration = Enemies.Capacity;
         PlayerAncestor.DifficultyModifier = 0;
-        Debug.Log(PlayerAncestor.Name);
-        Utils.GenerateClothes(Player,PlayerAncestor);
+        //Debug.Log(PlayerAncestor.Name);
+        //Utils.GenerateClothes(Player,PlayerAncestor);
     }
     private void Awake() {
         
@@ -59,39 +59,41 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         familyTree = new List<Ancestor>();
-        StartCoroutine(LoadSceneWithFade("Main"));
-        StartCoroutine(ShowIntro());
-    }
-    public void LoadEnemy(int stage) {
-        Ancestor newAncestor = GenerateEnemy(stage);
-        Instance.familyTree.Add(newAncestor);
-    }
 
-    public Ancestor GenerateEnemy(int iteration=0)
-    {
-        GameObject enemy = Instantiate(EnemyPrefab);
-        Ancestor enemyAnc;
-        enemyAnc = new Ancestor();
-        enemyAnc.Name = Utils.GenerateJapaneseName();
-        enemyAnc.Iteration = iteration;
-        enemyAnc.DifficultyModifier = 0*iteration;
-        // Move enemy to random position near player
-        enemy.transform.position = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
-        enemy.GetComponent<EnemyAI>().Name = enemyAnc.Name;
-        enemy.GetComponent<EnemyAI>().Player = Player.transform;
-        Utils.GenerateClothes(enemy,enemyAnc);
-        Enemies.Add(enemyAnc);
-        return enemyAnc;
+        CreatePlayerData();
+
+        StartCoroutine(LoadSceneWithFade("Main"));
+        //StartCoroutine(ShowIntro());
     }
+    //public void LoadEnemy(int stage) {
+    //    Ancestor newAncestor = GenerateEnemy(stage);
+    //    Instance.familyTree.Add(newAncestor);
+    //}
+
+    //public Ancestor GenerateEnemy(int iteration=0)
+    //{
+    //    GameObject enemy = Instantiate(EnemyPrefab);
+    //    Ancestor enemyAnc;
+    //    enemyAnc = new Ancestor();
+    //    enemyAnc.Name = Utils.GenerateJapaneseName();
+    //    enemyAnc.Iteration = iteration;
+    //    enemyAnc.DifficultyModifier = 0*iteration;
+    //    // Move enemy to random position near player
+    //    enemy.transform.position = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+    //    enemy.GetComponent<EnemyAI>().Name = enemyAnc.Name;
+    //    enemy.GetComponent<EnemyAI>().Player = Player.transform;
+    //    Utils.GenerateClothes(enemy,enemyAnc);
+    //    Enemies.Add(enemyAnc);
+    //    return enemyAnc;
+    //}
 
     public void OnDeath()
     {
         //Spawn Tomb prefab where player died
-        GameObject tomb = Instantiate(TombstonePrefab);
-        tomb.transform.position = Player.transform.position;
-        tomb.transform.rotation = Player.transform.rotation;
-        lastTombstonePosition = tomb.transform.position;
-        PlayerAncestor.Name = "My ghost";
+        //GameObject tomb = Instantiate(TombstonePrefab);
+        //tomb.transform.position = Player.transform.position;
+        //tomb.transform.rotation = Player.transform.rotation;
+        //lastTombstonePosition = tomb.transform.position;
         Enemies.Insert(CurrentStage, PlayerAncestor);
         CurrentStage = 0;
 
@@ -157,6 +159,10 @@ public class GameManager : MonoBehaviour
         }
 
         blackDrape.gameObject.SetActive(false);
+    }
+
+    public void Win() {
+        StartCoroutine(LoadSceneWithFade("Win"));
     }
 
 

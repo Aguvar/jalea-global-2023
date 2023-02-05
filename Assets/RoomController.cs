@@ -11,6 +11,7 @@ public class RoomController : MonoBehaviour {
     private Transform bossSpawn;
 
     public GameObject BossToSpawm;
+    public Ancestor ancestor;
 
     private bool bossSpawned = false;
 
@@ -26,8 +27,15 @@ public class RoomController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player") && !bossSpawned) {
-            Instantiate(BossToSpawm, bossSpawn.transform.position, bossSpawn.transform.rotation);
+            GameObject boss = Instantiate(BossToSpawm, bossSpawn.transform.position, bossSpawn.transform.rotation);
+            EnemyAI ai = boss.GetComponent<EnemyAI>();
+            ai.EnemyDied.AddListener(UnblockRoom);
+            ai.Name = ancestor.Name;
             bossSpawned = true;
         }
+    }
+
+    void UnblockRoom() {
+        BlockingTomb.SetActive(false);
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 449942345}
   - component: {fileID: 449942347}
   - component: {fileID: 449942346}
+  - component: {fileID: 7534439424489457077}
   m_Layer: 0
   m_Name: NameTag
   m_TagString: Untagged
@@ -172,6 +173,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 449942347}
   m_maskType: 0
+--- !u!114 &7534439424489457077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449942344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e21803db38721e84fb49ed97b31da38d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3069472419907088464
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4177266064215042521
 Transform:
   m_ObjectHideFlags: 0
@@ -485,6 +498,7 @@ GameObject:
   - component: {fileID: 9044670357273014784}
   - component: {fileID: 9044670357273014799}
   - component: {fileID: 26528871801245162}
+  - component: {fileID: 2271661212643855061}
   m_Layer: 0
   m_Name: Grandad
   m_TagString: Enemy
@@ -615,3 +629,19 @@ MonoBehaviour:
   DodgeWindow: 0.2
   Name: Inari
   damageText: {fileID: 232126888972014935, guid: d72cefac7b8d6ee41a8e0359a3c9a140, type: 3}
+  isAggro: 0
+  EnemyDied:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2271661212643855061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9044670357273014786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd183e83c6ec84b47b68da543665db53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

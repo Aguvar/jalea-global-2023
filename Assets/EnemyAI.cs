@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class EnemyAI : MonoBehaviour
-{
+using UnityEngine.Events;
+
+public class EnemyAI : MonoBehaviour {
     public Transform Player;
     public float BaseMoveSpeed = 30;
     private float MoveSpeed = 0;
@@ -19,34 +20,37 @@ public class EnemyAI : MonoBehaviour
     public float BlockCooldown = 0.5f;
     public float DodgeWindow = 0.2f;
     public string Name = "Boss";
-        public GameObject damageText;
+    public GameObject damageText;
+    public bool isAggro = true;
 
-    public void TakeDamage(float damage)
-{
-    TryBlock();
-    if(isBlocking){
-        Debug.Log("Blocked half damage");
-        damage = damage / 2;
-    }
-    Health -= damage;
+    private Animator animator;
 
-    // Create a new instance of the DamageIndicator prefab
-         DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
-         indicator.SetDamageText((int)damage);
+    public UnityEvent EnemyDied;
 
-    if (Health <= 0)
-    {
-        Destroy(gameObject);
+    public void TakeDamage(float damage) {
+        TryBlock();
+        if (isBlocking) {
+            Debug.Log("Blocked half damage");
+            damage = damage / 2;
+        }
+        Health -= damage;
+
+        // Create a new instance of the DamageIndicator prefab
+        DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+        indicator.SetDamageText((int)damage);
+
+        if (Health <= 0) {
+            animator.SetBool("isDead", true);
+            EnemyDied.Invoke();
+            //GameManager.Instance.Win();
+            //Destroy(gameObject);
+        }
     }
-}
-    void DealDamage()
-    {
-        Player.GetComponent<PlayerController>().ReceiveAttack(AttackDamage);
+    void DealDamage() {
+        Player.GetComponent<PlayerController>().TakeDamage(AttackDamage);
     }
-    void TryBlock()
-    {
-        if (Random.value <= ChanceToBlock)
-        {
+    void TryBlock() {
+        if (Random.value <= ChanceToBlock) {
             MoveSpeed = 0;
             GetComponent<Renderer>().material.color = Color.blue;
             isRetreating = false;
@@ -55,74 +59,78 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    IEnumerator ResetBlock()
-    {
+    IEnumerator ResetBlock() {
         yield return new WaitForSeconds(BlockCooldown);
         isBlocking = false;
         GetComponent<Renderer>().material.color = Color.white;
         MoveSpeed = BaseMoveSpeed;
     }
-    IEnumerator ResetAttack()
-    {        
+    IEnumerator ResetAttack() {
         yield return new WaitForSeconds(AttackCooldown);
         isAttacking = false;
         GetComponent<Renderer>().material.color = Color.white;
         MoveSpeed = BaseMoveSpeed;
 
     }
-void Attack()
-{
-    if (!isAttacking && !isBlocking)
-    {
-        isAttacking = true;
-        MoveSpeed = 0;
-        GetComponent<Renderer>().material.color = Color.red;
-        Invoke("DealDamage", DodgeWindow);
-        StartCoroutine(ResetAttack());
-        StartCoroutine(Retreat());
+    void Attack() {
+        if (!isAttacking && !isBlocking) {
+            isAttacking = true;
+            MoveSpeed = 0;
+            GetComponent<Renderer>().material.color = Color.red;
+            Invoke("DealDamage", DodgeWindow);
+            StartCoroutine(ResetAttack());
+            StartCoroutine(Retreat());
+        }
     }
-}
 
-IEnumerator Retreat()
-{
-    isRetreating = true;
-    Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
-    float elapsedTime = 0f;
-    while (elapsedTime < retreatTime && isRetreating)
-    {
-        transform.position += randomDirection * BaseMoveSpeed * Time.deltaTime;
-        elapsedTime += Time.deltaTime;
-        yield return null;
-    }
-    isRetreating = false;
-    MoveSpeed = BaseMoveSpeed;
-}
-
-
-    void Start()
-    {
+    IEnumerator Retreat() {
+        isRetreating = true;
+        Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        float elapsedTime = 0f;
+        while (elapsedTime < retreatTime && isRetreating) {
+            transform.position += randomDirection * BaseMoveSpeed * Time.deltaTime;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        isRetreating = false;
         MoveSpeed = BaseMoveSpeed;
+    }
+
+
+    void Start() {
+        MoveSpeed = BaseMoveSpeed;
+        animator = GetComponentInChildren<Animator>();
 
         GetComponentInChildren<TextMeshPro>().text = Name;
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-          transform.LookAt(Player);
+    void Update() {
+        transform.LookAt(Player);
 
-     
-if (Vector3.Distance(transform.position, Player.position) < AttackRange)
-        {
-            Attack();
+        animator.ResetTrigger("isAttacking");
+        if (isAggro && Health > 0) {
+
+            if (Vector3.Distance(transform.position, Player.position) < AttackRange) {
+                Attack();
+                animator.SetTrigger("isAttacking");
+                animator.SetBool("isMoving", false);
+            } else {
+                
+                transform.position += transform.forward * MoveSpeed * Time.deltaTime;
+                animator.SetBool("isMoving", true);
+            }
+
+
+            if (transform.forward.x > 0) {
+                transform.localScale.Set(transform.localScale.x, transform.localScale.y, -10);
+            } else {
+                transform.localScale.Set(transform.localScale.x, transform.localScale.y, -10);
+            }
         }
-        else
-        {
-            transform.position += transform.forward * MoveSpeed * Time.deltaTime;
-        }
-        
-        
-     // If player tries to attack, try to block
+
+        // If player tries to attack, try to block
 
     }
 }
