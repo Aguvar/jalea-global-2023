@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     private TMP_Text introText;
     [SerializeField]
     private GameObject introPanel;
+    [SerializeField]
+    private CanvasGroup blackDrape;
 
     public GameObject EnemyPrefab;
 
@@ -92,7 +94,9 @@ public class GameManager : MonoBehaviour
         PlayerAncestor.Name = "My ghost";
         Enemies.Insert(CurrentStage, PlayerAncestor);
         CurrentStage = 0;
-        SceneManager.LoadScene("Main");
+
+
+        StartCoroutine(LoadSceneWithFade("Main"));
     }
 
     // Update is called once per frame
@@ -131,6 +135,28 @@ public class GameManager : MonoBehaviour
     void GameOver() {
         var ancestor = new Ancestor() {  };
 
+
+
+    }
+
+    IEnumerator LoadSceneWithFade(string sceneName) {
+
+        blackDrape.gameObject.SetActive(true);
+        blackDrape.alpha = 0;
+
+        while (blackDrape.alpha < 1) {
+            yield return null;
+            blackDrape.alpha += 0.01f;
+        }
+
+        SceneManager.LoadScene(sceneName);
+
+        while (blackDrape.alpha > 0) {
+            yield return null;
+            blackDrape.alpha -= 0.01f;
+        }
+
+        blackDrape.gameObject.SetActive(false);
     }
 
 

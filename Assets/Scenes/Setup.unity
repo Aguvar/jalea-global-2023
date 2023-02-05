@@ -1142,6 +1142,7 @@ GameObject:
   - component: {fileID: 2033399860}
   - component: {fileID: 2033399862}
   - component: {fileID: 2033399861}
+  - component: {fileID: 2033399863}
   m_Layer: 5
   m_Name: Drape
   m_TagString: Untagged
@@ -1204,6 +1205,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033399859}
   m_CullTransparentMesh: 1
+--- !u!225 &2033399863
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033399859}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2061794872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,6 +1248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   introText: {fileID: 713142301}
   introPanel: {fileID: 115597735}
+  blackDrape: {fileID: 2033399863}
   EnemyPrefab: {fileID: 9044670357273014786, guid: f335dfa76721c55419b02177da75573b, type: 3}
   TombstonePrefab: {fileID: 3711584884544473710, guid: 4a5447f60b44806479ededede14b4f5a, type: 3}
   Player: {fileID: 0}
