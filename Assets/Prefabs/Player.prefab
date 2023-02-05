@@ -305,7 +305,7 @@ MonoBehaviour:
   Health: 100
   AttackDamage: 10
   AimSmoothing: 15
-  parti: {fileID: 4886409960094515802}
+  parti: {fileID: 0}
 --- !u!54 &9044670357273014799
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -394,11 +394,6 @@ PrefabInstance:
 --- !u!4 &3050136303424968638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3050136303701088945, guid: b77b7f7f3024e3d4a9531af179c5b325, type: 3}
-  m_PrefabInstance: {fileID: 277564687}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &4886409960094515802 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4886409960370868053, guid: b77b7f7f3024e3d4a9531af179c5b325, type: 3}
   m_PrefabInstance: {fileID: 277564687}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3584614661236940403
