@@ -19,19 +19,26 @@ public class EnemyAI : MonoBehaviour
     public float BlockCooldown = 0.5f;
     public float DodgeWindow = 0.2f;
     public string Name = "Boss";
+        public GameObject damageText;
+
     public void TakeDamage(float damage)
-    {
-        TryBlock();
-        if(isBlocking){
-            Debug.Log("Blocked half damage");
+{
+    TryBlock();
+    if(isBlocking){
+        Debug.Log("Blocked half damage");
         damage = damage / 2;
-        }
-        Health -= damage;
-        if (Health <= 0)
-        {
-            Destroy(gameObject);
-        }
     }
+    Health -= damage;
+
+    // Create a new instance of the DamageIndicator prefab
+         DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+         indicator.SetDamageText((int)damage);
+
+    if (Health <= 0)
+    {
+        Destroy(gameObject);
+    }
+}
     void DealDamage()
     {
         Player.GetComponent<PlayerController>().ReceiveAttack(AttackDamage);
