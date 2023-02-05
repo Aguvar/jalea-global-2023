@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public GameObject TombstonePrefab;
 
     public GameObject Player;
-
+    public float PlayerHealth = 100f;
     public Ancestor PlayerAncestor;
     
     public GameObject PlayerPrefab;
@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public int CurrentStage = 0;
     public List<Ancestor> Enemies = new List<Ancestor>();
     // Queue of stages to load
+    public LifePanel lifePanel;
 
     public void CreatePlayerData() {
         //Player = Instantiate(PlayerPrefab, new Vector3(0, 15, 0), Quaternion.identity);
@@ -58,6 +59,8 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+
+        lifePanel = GameObject.Find("LifePanel").GetComponent<LifePanel>();
         familyTree = new List<Ancestor>();
 
         CreatePlayerData();

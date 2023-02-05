@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour {
     //    didParry = false;
     //}
     public void TakeDamage(float damage) {
-
+        
         //damageReceivedRumble = true;
         if (Health <= 0 && !isDead) {
             StartCoroutine(currentController.DeathRMCoroutine());
@@ -78,11 +78,13 @@ public class PlayerController : MonoBehaviour {
             //deathRumble = true;
             Debug.Log("Dead");
             isDead = true;
+            gameManager.lifePanel.UpdateLifePanel(100f);
             gameManager.OnDeath();
         } else {
             Health -= damage;
             StartCoroutine(currentController.DmgReceivedRMCoroutine());
         }
+        gameManager.lifePanel.UpdateLifePanel(Health);
     }
 
     public void DealDamage(GameObject enemy) {
