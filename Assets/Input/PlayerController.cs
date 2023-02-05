@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 10;
+    private float speed = 30;
     [SerializeField]
     private float dodgeSpeed;
     [SerializeField]
@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     private PlayerInputs playerInputs;
     private Animator animator;
     private SpriteRenderer[] spriteRenderers;
-    private float coneAngle = 45.0f;
-    private float coneDistance = 5.0f;
+    private float coneAngle = 180.0f;
+    private float coneDistance = 20.0f;
     private Vector2 currentAim;
     private Vector2 currentMove;
 
