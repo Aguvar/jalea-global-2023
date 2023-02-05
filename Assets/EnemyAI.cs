@@ -27,6 +27,9 @@ public class EnemyAI : MonoBehaviour {
 
     public UnityEvent EnemyDied;
 
+    [SerializeField]
+    private ParticleSystem parti;
+
     public void TakeDamage(float damage) {
         TryBlock();
         if (isBlocking) {
@@ -41,9 +44,22 @@ public class EnemyAI : MonoBehaviour {
 
         if (Health <= 0) {
             animator.SetBool("isDead", true);
+            // Make the enemy gradually disappear through the floor
+            StartCoroutine(Disappear());
+            GetComponent<Collider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = true;
             EnemyDied.Invoke();
             //GameManager.Instance.Win();
             //Destroy(gameObject);
+        }
+    }
+
+    IEnumerator Disappear() {
+        float elapsedTime = 0f;
+        while (elapsedTime < 1f) {
+            transform.position += Vector3.down * Time.deltaTime*30;
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
     }
     void DealDamage() {
@@ -74,6 +90,7 @@ public class EnemyAI : MonoBehaviour {
     }
     void Attack() {
         if (!isAttacking && !isBlocking) {
+            parti.Play();
             isAttacking = true;
             MoveSpeed = 0;
             GetComponent<Renderer>().material.color = Color.red;
@@ -100,6 +117,7 @@ public class EnemyAI : MonoBehaviour {
     void Start() {
         MoveSpeed = BaseMoveSpeed;
         animator = GetComponentInChildren<Animator>();
+        parti = GetComponentInChildren<ParticleSystem>();
 
         GetComponentInChildren<TextMeshPro>().text = Name;
         Player = GameObject.FindGameObjectWithTag("Player").transform;
