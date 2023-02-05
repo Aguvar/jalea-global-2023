@@ -59,8 +59,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         familyTree = new List<Ancestor>();
-        SceneManager.LoadScene("Main");
-    
+        StartCoroutine(LoadSceneWithFade("Main"));
+        StartCoroutine(ShowIntro());
     }
     public void LoadEnemy(int stage) {
         Ancestor newAncestor = GenerateEnemy(stage);
