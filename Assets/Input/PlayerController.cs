@@ -54,18 +54,20 @@ public class PlayerController : MonoBehaviour {
 
 
     //}
-    IEnumerator ResetParry(float damage) {
-        yield return new WaitForSeconds(parryWindow);
-        if (didParry) {
-            Debug.Log("Parried");
-            Health += damage;
-        } else {
-            Debug.Log("Took Damage");
-            DamageTaken(damage);
-        }
-        isParryable = false;
-        didParry = false;
-    }
+    //IEnumerator ResetParry(float damage) {
+    //    yield return new WaitForSeconds(parryWindow);
+    //    GetComponent<Renderer>().material.color = Color.white;
+    //    if (didParry) {
+    //        Debug.Log("Parried");
+    //        //parryRumble = true;
+    //    } else {
+    //        Debug.Log("Took Damage");
+    //        TakeDamage(damage);
+    //    }
+    //    isParryable = false;
+    //    didParry = false;
+    //}
+    public void TakeDamage(float damage) {
 
         //damageReceivedRumble = true;
         if (Health <= 0 && !isDead) {
@@ -81,15 +83,6 @@ public class PlayerController : MonoBehaviour {
             Health -= damage;
             StartCoroutine(currentController.DmgReceivedRMCoroutine());
         }
-    }
-    public void TakeDamage(float damage) {
-
-        //damageReceivedRumble = true;
-        if (!isBlocking) {
-            isParryable = true;
-            StartCoroutine(ResetParry(damage));
-        }
-        
     }
 
     public void DealDamage(GameObject enemy) {
@@ -193,7 +186,7 @@ public class PlayerController : MonoBehaviour {
             // Turn blue
             gameManager.Player.GetComponent<Renderer>().material.color = Color.blue;
             if (isParryable) {
-        didParry = true;
+                Parry();
             }
         };
         playerInputs.Player.Block.canceled += ctx => {
@@ -203,7 +196,9 @@ public class PlayerController : MonoBehaviour {
         };
     }
 
-
+    void Parry() {
+        didParry = true;
+    }
 
     IEnumerator DodgeCooldown() {
         yield return new WaitForSeconds(0.1f);
@@ -220,7 +215,7 @@ public class PlayerController : MonoBehaviour {
             parti.Play();
             Debug.Log("Attack");
             canAttack = false;
-            //Habr�a que ajustar esto para que checkee que EnemyAI tiene cerca
+            //Habría que ajustar esto para que checkee que EnemyAI tiene cerca
             //esto me cacha como 4 rigidbodies. -ro
             List<Collider> enemies = GetObjectsInFront(_rigidbody);
 
