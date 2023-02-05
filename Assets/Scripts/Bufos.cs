@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Bufos : MonoBehaviour
 {
@@ -22,10 +23,17 @@ public class Bufos : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    { 
 
     }
-        private void OnTriggerEnter(Collider other)
+    //private void OnGUI()
+    //{
+    //    EditorGUILayout.LabelField("0: Attack Damage Buff");
+    //    EditorGUILayout.LabelField("1: HP Buff");
+    //    EditorGUILayout.LabelField("2: Attack Speed Buff");
+    //}
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         play = other.gameObject.GetComponent<PlayerController>();
