@@ -5,11 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 50;
+    private float speed = 30;
     [SerializeField]
     private float dodgeSpeed;
-    [SerializeField]
-    private int attack = 1;
     [SerializeField]
     private float dodgeInternalCD;
     private float dodgeTimer;
@@ -27,10 +25,15 @@ public class PlayerController : MonoBehaviour
     public float parryWindow = 0.2f;
     public float Health = 100f;
     public float AttackDamage = 10f;
+    //base cooldown for reduction purposes when you get buffs
+    public float AttackBaseCD;
+    public float AttackInternalCD;
+
     private bool isParryable = false;
     private bool didParry = false;
     private bool isBlocking = false;
     private bool isDead = false;
+    private bool canAttack = true;
     public float AimSmoothing = 15f;
     private GameManager gameManager;
 
@@ -68,6 +71,7 @@ public class PlayerController : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
+            playerInputs.Disable();
             speed = 0;
             GetComponent<Renderer>().material.color = Color.yellow;
             isDead = true;
@@ -75,7 +79,7 @@ public class PlayerController : MonoBehaviour
             gameManager.OnDeath();
         }
     }
-
+    
     public void DealDamage(GameObject enemy)
     {
         if (enemy != null) enemy.GetComponent<EnemyAI>().TakeDamage(AttackDamage);
@@ -97,6 +101,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         gameManager = GameManager.Instance;
         parti = GetComponentInChildren<ParticleSystem>(); 
     }
@@ -107,10 +112,11 @@ public class PlayerController : MonoBehaviour
         Aim();
         Move();
         // If player pressed the space key (not in player inputs) attack()
-        if(!isDead){
-        Attack();
+        if (playerInputs.Player.Attack.triggered && canAttack)
+            StartCoroutine(AtkCoroutine());
+
         Block();
-          }
+          
      
     }
 
@@ -185,25 +191,9 @@ void Aim()
 
     }
 
-    void Attack()
-    {
-        if (playerInputs.Player.Attack.triggered && !isBlocking)
-        {
-        parti.Play();
-        Debug.Log("Attack");
-        List<Collider> enemies = GetObjectsInFront(_rigidbody);
-        foreach (Collider enemy in enemies)
-        {
-            if (enemy.gameObject.tag == "Enemy"){
-            DealDamage(enemy.gameObject);
-            }
-        }        }
-
-    }
 
   void Block()
     {
-        
         playerInputs.Player.Block.performed += ctx => {
             Debug.Log("Blocking");
             isBlocking = true;
@@ -227,18 +217,6 @@ void Aim()
 
     }
 
-    //void Dodge()
-    //{
-    //    _rigidbody.AddForce(new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed), ForceMode.Impulse);
-    //    //_rigidbody.velocity = new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed);
-    //    dodgeTimer = dodgeInternalCD;
-    //    canDodge = false;
-    //    StartCoroutine(DodgeCooldown());
-    //    Debug.Log("doge");
-    //}
-
-
-
     IEnumerator DodgeCooldown()
     {
         yield return new WaitForSeconds(0.1f);
@@ -249,8 +227,55 @@ void Aim()
         canDodge = true;
         Debug.Log("Dodge Ready");
     }
+
+    IEnumerator AtkCoroutine()
+    {
+        if (!isBlocking)
+        {
+            parti.Play();
+            Debug.Log("Attack");
+            canAttack = false;
+            List<Collider> enemies = GetObjectsInFront(_rigidbody);
+            foreach (Collider enemy in enemies)
+            {
+                if (enemy.gameObject.tag == "Enemy")
+                {
+                DealDamage(enemy.gameObject);
+                }
+            }
+            yield return new WaitForSeconds(AttackInternalCD);
+            canAttack = true;
+        }
+
+    }
 }
 
 
 
+//deprecated
 
+    //void Dodge()
+    //{
+    //    _rigidbody.AddForce(new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed), ForceMode.Impulse);
+    //    //_rigidbody.velocity = new Vector3(currentMove.x * dodgeSpeed, 0, currentMove.y * dodgeSpeed);
+    //    dodgeTimer = dodgeInternalCD;
+    //    canDodge = false;
+    //    StartCoroutine(DodgeCooldown());
+    //    Debug.Log("doge");
+    //}
+
+    //void Attack()
+    //{
+    //    if (!isBlocking)
+    //    {
+    //    parti.Play();
+    //    Debug.Log("Attack");
+    //    List<Collider> enemies = GetObjectsInFront(_rigidbody);
+    //    foreach (Collider enemy in enemies)
+    //    {
+    //        if (enemy.gameObject.tag == "Enemy"){
+    //        DealDamage(enemy.gameObject);
+    //        }
+    //    }        }
+
+    //}
