@@ -13,11 +13,16 @@ public class RoomController : MonoBehaviour {
     public GameObject BossToSpawm;
     public Ancestor ancestor;
 
+    public GameObject[] buffs;
+
     private bool bossSpawned = false;
 
     // Start is called before the first frame update
     void Start() {
-
+        foreach (var buff in buffs) {
+            var buffScript = buff.GetComponent<Bufos>();
+            buffScript.grabbedEvent.AddListener(HideBuffs);
+        }
     }
 
     // Update is called once per frame
@@ -37,5 +42,15 @@ public class RoomController : MonoBehaviour {
 
     void UnblockRoom() {
         BlockingTomb.SetActive(false);
+
+        foreach (var buff in buffs) {
+            buff.SetActive(true);
+        }
+    }
+
+    void HideBuffs() {
+        foreach (var buff in buffs) {
+            buff.SetActive(false);
+        }
     }
 }

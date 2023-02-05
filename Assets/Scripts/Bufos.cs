@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Events;
 
 public class Bufos : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Bufos : MonoBehaviour
     private PlayerController play;
     [SerializeField]
     private float value;
+
+    public UnityEvent grabbedEvent;
 
     private void Awake()
     {
@@ -46,6 +49,7 @@ public class Bufos : MonoBehaviour
             case 2: buffATKSpeed(play, value);
                 break;
         }
+        grabbedEvent.Invoke();
     }
     
 

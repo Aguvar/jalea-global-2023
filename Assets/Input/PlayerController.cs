@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     public float AimSmoothing = 15f;
     private GameManager gameManager;
     private ControllerTimesTwo currentController;
+    private bool isDead = false;
 
     [SerializeField]
     private ParticleSystem parti;
@@ -69,13 +70,14 @@ public class PlayerController : MonoBehaviour {
     public void TakeDamage(float damage) {
 
         //damageReceivedRumble = true;
-        if (Health <= 0) {
+        if (Health <= 0 && !isDead) {
             StartCoroutine(currentController.DeathRMCoroutine());
             playerInputs.Disable();
             speed = 0;
             GetComponent<Renderer>().material.color = Color.yellow;
             //deathRumble = true;
             Debug.Log("Dead");
+            isDead = true;
             gameManager.OnDeath();
         } else {
             Health -= damage;
