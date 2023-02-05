@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,13 +33,18 @@ public class PlayerController : MonoBehaviour
     private bool isParryable = false;
     private bool didParry = false;
     private bool isBlocking = false;
-    private bool isDead = false;
     private bool canAttack = true;
     public float AimSmoothing = 15f;
     private GameManager gameManager;
+    private ControllerTimesTwo currentController;
 
     [SerializeField]
     private ParticleSystem parti;
+
+    //public bool damageDealtRumble;
+    //public bool damageReceivedRumble;
+    //public bool deathRumble;
+    //public bool parryRumble;
 
     public void ReceiveAttack(float damage)
     {
@@ -57,6 +63,7 @@ public class PlayerController : MonoBehaviour
         if (didParry)
         {
             Debug.Log("Parried");
+            //parryRumble = true;
         }
         else
         {
@@ -68,15 +75,22 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        Health -= damage;
+
+        //damageReceivedRumble = true;
         if (Health <= 0)
         {
+            StartCoroutine(currentController.DeathRMCoroutine());
             playerInputs.Disable();
             speed = 0;
             GetComponent<Renderer>().material.color = Color.yellow;
-            isDead = true;
+            //deathRumble = true;
             Debug.Log("Dead");
             gameManager.OnDeath();
+        }
+        else
+        {
+            Health -= damage;
+            StartCoroutine(currentController.DmgReceivedRMCoroutine());
         }
     }
     
@@ -91,6 +105,7 @@ public class PlayerController : MonoBehaviour
         playerInputs = new PlayerInputs();
         animator = GetComponentInChildren<Animator>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        currentController = GetComponentInChildren<ControllerTimesTwo>();
     }
 
     private void OnEnable()
@@ -187,8 +202,6 @@ void Aim()
         {
             spriteRenderer.flipX = _rigidbody.velocity.x > 0;
         }
-
-
     }
 
 
@@ -214,7 +227,6 @@ void Aim()
     void Parry()
     {
         didParry = true;
-
     }
 
     IEnumerator DodgeCooldown()
@@ -235,12 +247,17 @@ void Aim()
             parti.Play();
             Debug.Log("Attack");
             canAttack = false;
+            //Habría que ajustar esto para que checkee que EnemyAI tiene cerca
+            //esto me cacha como 4 rigidbodies. -ro
             List<Collider> enemies = GetObjectsInFront(_rigidbody);
+
             foreach (Collider enemy in enemies)
             {
                 if (enemy.gameObject.tag == "Enemy")
                 {
                 DealDamage(enemy.gameObject);
+                //no me siento bien haciendo esto
+                StartCoroutine(currentController.DmgDealtRMCoroutine());
                 }
             }
             yield return new WaitForSeconds(AttackInternalCD);
