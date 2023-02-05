@@ -486,8 +486,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  BaseMoveSpeed: 20
+  BaseMoveSpeed: 40
   AttackCooldown: 0.5
+  AttackSpeed: 1
   AttackRange: 3
   AttackDamage: 10
   Health: 100

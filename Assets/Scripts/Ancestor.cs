@@ -10,4 +10,5 @@ public class Ancestor
     public int HelmetNum;
     public int DifficultyModifier;
     public int Iteration;
+    public List<Buff> Buffs = new List<Buff>();
 }

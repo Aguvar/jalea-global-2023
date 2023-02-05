@@ -19,16 +19,21 @@ public class GameManager : MonoBehaviour
 
     public GameObject EnemyPrefab;
 
+    public GameObject TombstonePrefab;
+
     public GameObject Player;
 
     public Ancestor PlayerAncestor;
     
     public GameObject PlayerPrefab;
+
+    public Vector3 lastTombstonePosition = new Vector3(0,0,0);
     public int CurrentStage = 0;
-    public List<GameObject> Enemies = new List<GameObject>();
+    public List<Ancestor> Enemies = new List<Ancestor>();
+    // Queue of stages to load
 
     public void CreatePlayer() {
-        Player = Instantiate(PlayerPrefab, new Vector3(0, 5, 0), Quaternion.identity);
+        Player = Instantiate(PlayerPrefab, new Vector3(0, 15, 0), Quaternion.identity);
         PlayerAncestor = new Ancestor();
         PlayerAncestor.Name = Utils.GenerateJapaneseName();
         PlayerAncestor.Iteration = 0;
@@ -37,7 +42,7 @@ public class GameManager : MonoBehaviour
         Utils.GenerateClothes(Player,PlayerAncestor);
     }
     private void Awake() {
-
+        
 
         if (Instance != null)
         {
@@ -53,14 +58,11 @@ public class GameManager : MonoBehaviour
     void Start() {
         familyTree = new List<Ancestor>();
         SceneManager.LoadScene("Main");
-
+    
     }
-    public void LoadEnemies() {
-        for(int i = 0; i < 1; i++) {
-            Ancestor newAncestor = GenerateEnemy(i);
-            Debug.Log(newAncestor.Name);
-            Instance.familyTree.Add(newAncestor);
-        }
+    public void LoadEnemy(int stage) {
+        Ancestor newAncestor = GenerateEnemy(stage);
+        Instance.familyTree.Add(newAncestor);
     }
 
     public Ancestor GenerateEnemy(int iteration=0)
@@ -76,22 +78,21 @@ public class GameManager : MonoBehaviour
         enemy.GetComponent<EnemyAI>().Name = enemyAnc.Name;
         enemy.GetComponent<EnemyAI>().Player = Player.transform;
         Utils.GenerateClothes(enemy,enemyAnc);
-        Enemies.Add(enemy);
+        Enemies.Add(enemyAnc);
         return enemyAnc;
     }
 
-        public void OnDeath()
+    public void OnDeath()
     {
-        foreach (GameObject enemy in Enemies)
-        {
-            Destroy(enemy);
-        }
-        Player.name = "My ghost";
-        Enemies.Insert(CurrentStage, Player);
-        foreach (GameObject enemy in Enemies)
-        {
-            Instantiate(enemy);
-        }
+        //Spawn Tomb prefab where player died
+        GameObject tomb = Instantiate(TombstonePrefab);
+        tomb.transform.position = Player.transform.position;
+        tomb.transform.rotation = Player.transform.rotation;
+        lastTombstonePosition = tomb.transform.position;
+        PlayerAncestor.Name = "My ghost";
+        Enemies.Insert(CurrentStage, PlayerAncestor);
+        CurrentStage = 0;
+        SceneManager.LoadScene("Main");
     }
 
     // Update is called once per frame

@@ -103,7 +103,9 @@ IEnumerator Retreat()
     void Update()
     {
           transform.LookAt(Player);
-        if (Vector3.Distance(transform.position, Player.position) < AttackRange)
+
+     
+if (Vector3.Distance(transform.position, Player.position) < AttackRange)
         {
             Attack();
         }
@@ -111,6 +113,8 @@ IEnumerator Retreat()
         {
             transform.position += transform.forward * MoveSpeed * Time.deltaTime;
         }
+        
+        
      // If player tries to attack, try to block
 
     }
