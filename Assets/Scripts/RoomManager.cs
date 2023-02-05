@@ -7,12 +7,16 @@ public class RoomManager : MonoBehaviour
     [SerializeField]
     private GameObject roomPrefab;
     private GameManager gameManager;
+    [SerializeField]
+    public GameObject cinematicvirtualcam;
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameManager.Instance;
 
-        gameManager.CreatePlayer();        
+        gameManager.CreatePlayer();     
+        cinematicvirtualcam.GetComponent<Cinemachine.CinemachineVirtualCamera>().LookAt = gameManager.Player.transform;
+        cinematicvirtualcam.GetComponent<Cinemachine.CinemachineVirtualCamera>().Follow = gameManager.Player.transform; 
         //StartCoroutine(gameManager.ShowIntro());
 
         Debug.Log("Player created");
