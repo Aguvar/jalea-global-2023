@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6542454862525228522}
   - component: {fileID: 723407568776296632}
   - component: {fileID: 2158830007091412509}
+  - component: {fileID: 4776995741766279862}
   m_Layer: 0
   m_Name: Tomb 3
   m_TagString: Untagged
@@ -100,6 +101,18 @@ BoxCollider:
   m_Size: {x: 7, y: 7, z: 7}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2158830007091412509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711584884544473710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e21803db38721e84fb49ed97b31da38d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4776995741766279862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
