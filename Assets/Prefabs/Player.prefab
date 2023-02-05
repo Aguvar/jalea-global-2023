@@ -297,13 +297,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af08257b4f7ce847bb4c4a3ce48ef8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 40
   dodgeSpeed: 10
   attack: 1
   dodgeInternalCD: 1.25
   parryWindow: 0.2
   Health: 100
-  AttackDamage: 10
+  AttackDamage: 600
   AimSmoothing: 15
   parti: {fileID: 0}
 --- !u!54 &9044670357273014799
@@ -406,11 +406,11 @@ PrefabInstance:
     - target: {fileID: 3371023598972265472, guid: b31a1a8ea2f71964f882c483bb218b3d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1450750928, guid: 5dbcc10d11cae2e49969c2db11afb311, type: 3}
+      objectReference: {fileID: 21300000, guid: 7d6a38e8155cb60479d7b2e3186e48ff, type: 3}
     - target: {fileID: 6516796955897016091, guid: b31a1a8ea2f71964f882c483bb218b3d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1885394394, guid: a0898da3d2154924584436416d5ab32f, type: 3}
+      objectReference: {fileID: 21300000, guid: 8f96c70b560d37e4fa31849773add547, type: 3}
     - target: {fileID: 7543858068743497897, guid: b31a1a8ea2f71964f882c483bb218b3d, type: 3}
       propertyPath: m_RootOrder
       value: 2

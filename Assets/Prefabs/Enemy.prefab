@@ -490,7 +490,7 @@ MonoBehaviour:
   AttackCooldown: 0.5
   AttackRange: 3
   AttackDamage: 10
-  Health: 100
+  Health: 10000
   ChanceToBlock: 0.5
   retreatTime: 0.4
   BlockCooldown: 0.5

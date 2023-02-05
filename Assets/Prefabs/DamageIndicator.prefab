@@ -188,4 +188,4 @@ MonoBehaviour:
   text: {fileID: 55475338502874141}
   lifetime: 0.6
   minDist: 1
-  maxDist: 8
+  maxDist: 40
