@@ -82,8 +82,8 @@ public class EnemyAI : MonoBehaviour {
         MoveSpeed = BaseMoveSpeed;
     }
     IEnumerator ResetAttack() {
-        yield return new WaitForSeconds(AttackCooldown);
         isAttacking = false;
+        yield return new WaitForSeconds(AttackCooldown);
         GetComponent<Renderer>().material.color = Color.white;
         MoveSpeed = BaseMoveSpeed;
 
@@ -104,7 +104,6 @@ public class EnemyAI : MonoBehaviour {
     {
         if (!isAttacking && !isBlocking)
         {
-            parti.Play();
             isAttacking = true;
             MoveSpeed = 0;
             animator.SetBool("isWalking", false);
@@ -112,6 +111,8 @@ public class EnemyAI : MonoBehaviour {
             yield return new WaitForSeconds(0.25f);
             GetComponent<Renderer>().material.color = Color.red;
             Invoke("DealDamage", DodgeWindow);
+            parti.Play();
+            yield return new WaitForSeconds(0.25f);
             StartCoroutine(ResetAttack());
             StartCoroutine(Retreat());
         }
