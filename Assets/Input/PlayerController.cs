@@ -217,6 +217,7 @@ public class PlayerController : MonoBehaviour {
             canAttack = false;
             //Habría que ajustar esto para que checkee que EnemyAI tiene cerca
             //esto me cacha como 4 rigidbodies. -ro
+            animator.SetBool("isAttacking", true);
             List<Collider> enemies = GetObjectsInFront(_rigidbody);
 
             foreach (Collider enemy in enemies) {
@@ -227,6 +228,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
             yield return new WaitForSeconds(AttackInternalCD);
+            animator.SetBool("isAttacking", false);
             canAttack = true;
         }
 

@@ -9,7 +9,6 @@ public class EnemyAI : MonoBehaviour {
     public float BaseMoveSpeed = 30;
     private float MoveSpeed = 0;
     public float AttackCooldown = 0.5f;
-    public float AttackRange = 3f;
     public float AttackDamage = 10f;
     public float Health = 100f;
     public float ChanceToBlock = 0.5f;
@@ -22,7 +21,9 @@ public class EnemyAI : MonoBehaviour {
     public string Name = "Boss";
     public GameObject damageText;
     public bool isAggro = true;
-
+    private Rigidbody _rigidbody;
+    private float coneAngle = 180.0f;
+    private float coneDistance = 20.0f;
     private Animator animator;
 
     public UnityEvent EnemyDied;
@@ -53,7 +54,10 @@ public class EnemyAI : MonoBehaviour {
             //Destroy(gameObject);
         }
     }
+    void Awake() {
+                _rigidbody = GetComponent<Rigidbody>();
 
+    }
     IEnumerator Disappear() {
         float elapsedTime = 0f;
         while (elapsedTime < 1f) {
@@ -110,14 +114,16 @@ public class EnemyAI : MonoBehaviour {
             animator.SetTrigger("isAttacking");
             yield return new WaitForSeconds(0.25f);
             GetComponent<Renderer>().material.color = Color.red;
-            Invoke("DealDamage", DodgeWindow);
-            parti.Play();
-            yield return new WaitForSeconds(0.25f);
+            List<Collider> enemies = GetObjectsInFront(_rigidbody);
+            foreach (Collider enemy in enemies) {
+                if (enemy.gameObject.tag == "Player") {
+                    Invoke("DealDamage", DodgeWindow);
+                }
+            }
             StartCoroutine(ResetAttack());
             StartCoroutine(Retreat());
         }
     }
-
     IEnumerator Retreat() {
         isRetreating = true;
         Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
@@ -131,6 +137,27 @@ public class EnemyAI : MonoBehaviour {
         MoveSpeed = BaseMoveSpeed;
     }
 
+  List<Collider> GetObjectsInFront(Rigidbody body) {
+        Collider[] objectsInSphere = Physics.OverlapSphere(transform.position, coneDistance);
+        List<Collider> objectsInCone = new List<Collider>();
+
+        float startAngle = body.rotation.eulerAngles.y - coneAngle / 2;
+        float endAngle = body.rotation.eulerAngles.y + coneAngle / 2;
+
+        for (float angle = startAngle; angle < endAngle; angle += 1) {
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+            Debug.DrawRay(transform.position, direction * coneDistance, Color.red, 0.5f);
+        }
+
+        foreach (Collider col in objectsInSphere) {
+
+            if (Vector3.Angle(Quaternion.Euler(0, 90, 0) * body.transform.forward, col.transform.position - body.transform.position) <= coneAngle / 2) {
+                objectsInCone.Add(col);
+            }
+
+        }
+        return objectsInCone;
+    }
 
     void Start() {
         MoveSpeed = BaseMoveSpeed;
@@ -148,7 +175,7 @@ public class EnemyAI : MonoBehaviour {
         animator.ResetTrigger("isAttacking");
         if (isAggro && Health > 0) {
 
-            if (Vector3.Distance(transform.position, Player.position) < AttackRange) {
+            if (Vector3.Distance(transform.position, Player.position) < coneDistance) {
                 StartCoroutine(Attack());
             } else {
                 
