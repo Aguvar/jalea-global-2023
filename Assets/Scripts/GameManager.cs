@@ -60,11 +60,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
 
-        lifePanel = GameObject.Find("LifePanel").GetComponent<LifePanel>();
+        lifePanel = GameObject.FindObjectOfType<LifePanel>(true);
         familyTree = new List<Ancestor>();
-
         CreatePlayerData();
-
         StartCoroutine(LoadSceneWithFade("Main"));
         //StartCoroutine(ShowIntro());
     }
@@ -155,6 +153,7 @@ public class GameManager : MonoBehaviour
         }
 
         SceneManager.LoadScene(sceneName);
+        lifePanel.gameObject.SetActive(true);
 
         while (blackDrape.alpha > 0) {
             yield return null;

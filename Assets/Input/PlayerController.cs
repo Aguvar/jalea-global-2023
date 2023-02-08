@@ -119,8 +119,6 @@ public class PlayerController : MonoBehaviour {
             StartCoroutine(AtkCoroutine());
 
         Block();
-
-
     }
 
     void FixedUpdate() {

@@ -88,11 +88,28 @@ public class EnemyAI : MonoBehaviour {
         MoveSpeed = BaseMoveSpeed;
 
     }
-    void Attack() {
-        if (!isAttacking && !isBlocking) {
+    //void Attack() {
+    //    if (!isAttacking && !isBlocking) {
+    //        parti.Play();
+    //        isAttacking = true;
+    //        MoveSpeed = 0;
+    //        GetComponent<Renderer>().material.color = Color.red;
+    //        Invoke("DealDamage", DodgeWindow);
+    //        StartCoroutine(ResetAttack());
+    //        StartCoroutine(Retreat());
+    //    }
+    //}
+
+    private IEnumerator Attack()
+    {
+        if (!isAttacking && !isBlocking)
+        {
             parti.Play();
             isAttacking = true;
             MoveSpeed = 0;
+            animator.SetBool("isWalking", false);
+            animator.SetTrigger("isAttacking");
+            yield return new WaitForSeconds(0.25f);
             GetComponent<Renderer>().material.color = Color.red;
             Invoke("DealDamage", DodgeWindow);
             StartCoroutine(ResetAttack());
@@ -131,9 +148,7 @@ public class EnemyAI : MonoBehaviour {
         if (isAggro && Health > 0) {
 
             if (Vector3.Distance(transform.position, Player.position) < AttackRange) {
-                Attack();
-                animator.SetTrigger("isAttacking");
-                animator.SetBool("isMoving", false);
+                StartCoroutine(Attack());
             } else {
                 
                 transform.position += transform.forward * MoveSpeed * Time.deltaTime;

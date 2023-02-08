@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class Bufos : MonoBehaviour
 {
+    private GameManager mangler;
     public int bufftype;
     private PlayerController play;
     [SerializeField]
@@ -15,7 +16,7 @@ public class Bufos : MonoBehaviour
 
     private void Awake()
     {
-        
+        mangler = FindObjectOfType<GameManager>();
     }
 
 
@@ -72,6 +73,7 @@ public class Bufos : MonoBehaviour
     {
         player.Health += flat;
         Debug.Log("Total Health: " + player.Health);
+        mangler.lifePanel.UpdateLifePanel(player.Health);
         Destroy(gameObject);
     }
 
